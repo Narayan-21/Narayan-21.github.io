@@ -271,9 +271,9 @@ h6 {
 
 #preview-shadow {
     background-color: var(--previewShadow);
-    max-width: 500px;
-    height: 210px;
-    padding-left: 30px;
+    max-width: 550px;
+    height: 500px;
+    padding-left: 10px;
     padding-top: 10px;
 }
 
