@@ -6,7 +6,7 @@
     "email": "narine0233@gmail.com",
     "phone": "+919462637251",
     "url": "https://Narayan-21.github.io/",
-    "summary": "Machine Learning Engineer focused on LLMs, VLMs, RAG, and time‑series forecasting; shipped secure, production‑grade GenAI and vision systems.",
+    "summary": "Machine Learning Engineer focused on LLMs, VLMs, RAG, and time-series forecasting; shipped secure, production-grade GenAI and vision systems. Currently conducting independent research on LLM efficiency across pre-training, post-training, and inference. Strong interest in Mixture-of-Experts (MoE) transformer architectures, and actively learning CUDA and PTX to optimize large-scale model training and deployment. My Recent Interests include - Parallel Programming, LLM Efficiency and deployment, Mixture-of-Experts (MoE) transformer architectures, Agentic AI and Language Modeling.",
     "location": {
       "address": "WhiteField",
       "postalCode": "560066",
@@ -104,26 +104,27 @@
     }
   ],
   "certificates": [
-    { "name": "Microsoft Certified: Azure Fundamentals", "date": "", "issuer": "Microsoft", "url": "", "icon": "" },
-    { "name": "Microsoft Certified: Azure AI Fundamentals", "date": "", "issuer": "Microsoft", "url": "", "icon": "" },
-    { "name": "Microsoft Certified: Azure Data Scientist Associate", "date": "", "issuer": "Microsoft", "url": "", "icon": "" },
-    { "name": "Microsoft Certified: Azure AI Engineer Associate", "date": "", "issuer": "Microsoft", "url": "", "icon": "" },
-    { "name": "Databricks Certified: Lakehouse Fundamentals", "date": "", "issuer": "Databricks", "url": "", "icon": "" }
+    { "name": "Microsoft Certified: Azure Fundamentals", "date": "", "issuer": "Microsoft", "url": "https://learn.microsoft.com/en-us/users/narayanjangid-5006/credentials/734dbbe4fe3c3e0", "icon": "" },
+    { "name": "Microsoft Certified: Azure AI Fundamentals", "date": "", "issuer": "Microsoft", "url": "https://learn.microsoft.com/en-us/users/narayanjangid-5006/credentials/64ffa42b63e189fb", "icon": "" },
+    { "name": "Microsoft Certified: Azure Data Scientist Associate", "date": "", "issuer": "Microsoft", "url": "https://learn.microsoft.com/en-us/users/narayanjangid-5006/credentials/271d91931ef3eb51", "icon": "" },
+    { "name": "Microsoft Certified: Azure AI Engineer Associate", "date": "", "issuer": "Microsoft", "url": "https://learn.microsoft.com/en-us/users/narayanjangid-5006/credentials/ac7991f3290adf27", "icon": "" },
+    { "name": "Databricks Certified: Generative AI Engineer Associate", "date": "", "issuer": "Databricks", "url": "https://credentials.databricks.com/50814adf-abef-4f4d-a406-aa015153a94b#acc.50KWPDrv", "icon": "" }
   ],
   "publications": [],
   "skills": [
-    { "name": "Programming Languages", "level": "", "icon": "", "keywords": ["Python", "C", "SQL", "JavaScript", "TypeScript"] },
-    { "name": "Libraries", "level": "", "icon": "", "keywords": ["Pandas", "NumPy", "Matplotlib", "Transformers", "OpenCV", "PEFT", "PySpark"] },
+    { "name": "Programming Languages", "level": "", "icon": "", "keywords": ["Python", "C", "C++", "SQL", "JavaScript", "TypeScript", "GoLang"] },
+    { "name": "Libraries", "level": "", "icon": "", "keywords": ["Pandas", "NumPy", "Matplotlib", "Transformers", "OpenCV", "PEFT", "PySpark", "Cuda"] },
     { "name": "Frameworks", "level": "", "icon": "", "keywords": ["PyTorch", "TensorFlow", "LangChain", "LlamaIndex", "Celery", "gRPC", "Flask", "FastAPI"] },
     { "name": "Frontend Frameworks", "level": "", "icon": "", "keywords": ["React", "NextJS"] },
     { "name": "Technologies", "level": "", "icon": "", "keywords": ["Git", "Docker", "Databricks", "Azure AI Services", "Azure Functions", "AWS EC2", "AWS Lambda", "Cloudflare Workers", "Selenium", "WebSockets"] },
     { "name": "Databases", "level": "", "icon": "", "keywords": ["MySQL", "PostgreSQL", "Azure Cosmos DB", "MongoDB", "Redis", "Cloudflare D1"] }
   ],
   "languages": [
-    { "language": "English", "fluency": "Fluent", "icon": "" }
+    { "language": "English", "fluency": "Fluent", "icon": "" },
+    { "language": "Hindi", "fluency": "Native", "icon": "" }
   ],
   "interests": [
-    { "name": "Machine Learning & Generative AI", "icon": "", "keywords": ["LLMs", "RAG", "VLMs", "Time‑series Forecasting"] }
+    { "name": "Machine Learning, Large Language Models, ML Systems", "icon": "", "keywords": ["LLMs", "MoE", "VLMs", "Training", "Inference", "Parallel Programming", "Agentic AI", "Language Modeling"] }
   ],
   "references": [],
   "projects": [
