@@ -501,7 +501,7 @@ ninja.data = [{
         title: 'Custom_social',
         section: 'Socials',
         handler: () => {
-          window.open("https://www.narayan-21.github.io/", "_blank");
+          window.open("https://narayan-21.github.io/", "_blank");
         },
       },{
       id: 'light-theme',
