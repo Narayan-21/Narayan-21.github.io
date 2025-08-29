@@ -27,9 +27,11 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-### 👋 Hi, I'm Narayan Jangid  
-AI & ML Engineer with hands-on experience building production-grade GenAI, multimodal systems, and forecasting pipelines.  
-Currently exploring **LLM efficiency** across pre-training, post-training, and inference, with a strong focus on **Mixture-of-Experts (MoE)** transformers, **CUDA Kernel Optimizations** and **LLM Cache Handling Techniques**.  
-I’m also diving deep into **CUDA/PTX** and **parallel programming** to optimize large-scale training and deployment.  
-My research interests span **agentic AI, scalable inference, and advanced language modeling architectures**.  
-Always curious about pushing the boundaries of what large models can do in real-world applications.
+
+###  Hi, I'm Narayan Jangid  
+- AI & ML Engineer with experience building **production-grade GenAI, multimodal, and forecasting systems**  
+- Focused on improving **LLM efficiency** across pre-training, post-training, and inference.  
+- Exploring **kernel-level optimizations** for Language Models and advanced Transformer architectures (Vanilla + Mixture-of-Experts)
+- Actively learning **CUDA/PTX** and **parallel programming** for large-scale optimization  
+- Research Interests **Advanced language modeling, Scalable training, Efficient Inference, RL in NLP and Kernel Optimizations**  
+- Passionate about AI research and applying to **real-world applications**
