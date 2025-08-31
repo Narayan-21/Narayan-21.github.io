@@ -124,7 +124,12 @@
     { "language": "Hindi", "fluency": "Native", "icon": "" }
   ],
   "interests": [
-    { "name": ["Machine Learning", "Language Modelling", "Large Language Models", "ML Systems", "Parallel Programming", "Agentic AI"], "icon": "" }
+    { "name": ["Machine Learning"], "icon": "" },
+    { "name": ["Language Modelling"], "icon": "" },
+    { "name": ["Large Language Models"], "icon": "" },
+    { "name": ["ML Systems"], "icon": "" },
+    { "name": ["Parallel Programming"], "icon": "" },
+    { "name": ["Agentic AI"], "icon": "" }
   ],
   "references": [],
   "projects": [
