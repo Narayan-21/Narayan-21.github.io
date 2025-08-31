@@ -1,11 +1,11 @@
 ---
 layout: book-review
-title: Cuda by example
-author: Jason Sanders
-cover: assets/img/book_covers/cuda.jpg
+title: Reinforcement Learning - An Introduction
+author: Richard S. Sutton and Andrew G. Barto
+cover: assets/img/book_covers/rl.png
 # olid: OL43499941M # use Open Library ID to fetch cover (if no `cover` is provided)
 # isbn: 7539967447 # use ISBN to fetch cover (if no `olid` is provided, dashes are optional)
-categories: parallel_programming
+categories: distributed systems
 tags: top-100
 # buy_link: https://www.amazon.com/Godfather-Deluxe-Mario-Puzo/dp/0593542592
 # started: 2024-08-23

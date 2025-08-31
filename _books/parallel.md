@@ -7,7 +7,7 @@ cover: assets/img/book_covers/parallel.jpg
 # isbn: 7539967447 # use ISBN to fetch cover (if no `olid` is provided, dashes are optional)
 categories: parallel_programming
 tags: top-100
-buy_link: https://www.amazon.com/Godfather-Deluxe-Mario-Puzo/dp/0593542592
+# buy_link: https://www.amazon.com/Godfather-Deluxe-Mario-Puzo/dp/0593542592
 # started: 2024-08-23
 # finished: 2024-09-07
 # released: 1969
