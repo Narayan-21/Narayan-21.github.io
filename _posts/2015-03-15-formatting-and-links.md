@@ -1,36 +1,179 @@
 ---
 layout: post
-title: a post with formatting and links
-date: 2015-03-15 16:40:16
-description: march & april, looking forward to summer
-tags: formatting links
-categories: sample-posts
+title: Understanding Transformers — The Architecture Behind Modern LLMs
+date: 2025-08-31 14:00:00
+description: A deep dive into the Transformer architecture — self-attention, multi-head attention, position encodings, and scaling laws.
+tags: transformers deep-learning llms nlp
+categories: ai-ml
+featured: true
+thumbnail: assets/img/transformer-diagram.png
 ---
 
-Jean shorts raw denim Vice normcore, art party High Life PBR skateboard stumptown vinyl kitsch. Four loko meh 8-bit, tousled banh mi tilde forage Schlitz dreamcatcher twee 3 wolf moon. Chambray asymmetrical paleo salvia, sartorial umami four loko master cleanse drinking vinegar brunch. [Pinterest](https://www.pinterest.com) DIY authentic Schlitz, hoodie Intelligentsia butcher trust fund brunch shabby chic Kickstarter forage flexitarian. Direct trade <a href="https://en.wikipedia.org/wiki/Cold-pressed_juice">cold-pressed</a> meggings stumptown plaid, pop-up taxidermy. Hoodie XOXO fingerstache scenester Echo Park. Plaid ugh Wes Anderson, freegan pug selvage fanny pack leggings pickled food truck DIY irony Banksy.
+The **Transformer architecture** is the backbone of modern **Large Language Models (LLMs)** like GPT, BERT, and T5.  
+Introduced in the landmark paper [“Attention Is All You Need” (Vaswani et al., 2017)](https://arxiv.org/abs/1706.03762), it replaced RNNs and CNNs in sequence modeling with a highly parallelizable **self-attention mechanism**.
 
-#### Hipster list
+This post breaks down the architecture and all its nitty-gritty components.
 
-- brunch
-- fixie
-- raybans
-- messenger bag
+---
 
-#### Check List
+## 🚀 Motivation
 
-- [x] Brush Teeth
-- [ ] Put on socks
-  - [x] Put on left sock
-  - [ ] Put on right sock
-- [x] Go to school
+Before Transformers, we had **RNNs** and **LSTMs** for sequence modeling.  
+But they suffered from:
 
-Hoodie Thundercats retro, tote bag 8-bit Godard craft beer gastropub. Truffaut Tumblr taxidermy, raw denim Kickstarter sartorial dreamcatcher. Quinoa chambray slow-carb salvia readymade, bicycle rights 90's yr typewriter selfies letterpress cardigan vegan.
+- Sequential processing (slow, hard to parallelize)
+- Vanishing/exploding gradients
+- Difficulty handling **long-range dependencies**
 
-<hr>
+Transformers solved these with **attention**, allowing models to *look at all tokens simultaneously*.
 
-Pug heirloom High Life vinyl swag, single-origin coffee four dollar toast taxidermy reprehenderit fap distillery master cleanse locavore. Est anim sapiente leggings Brooklyn ea. Thundercats locavore excepteur veniam eiusmod. Raw denim Truffaut Schlitz, migas sapiente Portland VHS twee Bushwick Marfa typewriter retro id keytar.
+---
 
-> We do not grow absolutely, chronologically. We grow sometimes in one dimension, and not in another, unevenly. We grow partially. We are relative. We are mature in one realm, childish in another.
-> —Anais Nin
+## 🧩 Transformer Components
 
-Fap aliqua qui, scenester pug Echo Park polaroid irony shabby chic ex cardigan church-key Odd Future accusamus. Blog stumptown sartorial squid, gastropub duis aesthetic Truffaut vero. Pinterest tilde twee, odio mumblecore jean shorts lumbersexual.
+At a high level, the Transformer consists of **an Encoder** and **a Decoder**.
+
+#### Encoder
+- Takes the input sequence (e.g., words, tokens).
+- Builds contextualized embeddings.
+
+#### Decoder
+- Generates the output sequence step by step.
+- Used in tasks like **machine translation** or **text generation**.
+
+---
+
+### 🔑 Input Embeddings & Positional Encoding
+
+Since Transformers don’t have recurrence like RNNs, they need a way to encode *word order*.  
+They use **positional encodings** (sinusoidal or learned vectors).
+
+```python
+import torch
+import math
+
+def positional_encoding(seq_len, d_model):
+    pos = torch.arange(seq_len).unsqueeze(1)
+    i = torch.arange(d_model).unsqueeze(0)
+    angle_rates = 1 / torch.pow(10000, (2*(i//2))/d_model)
+
+    angle_rads = pos * angle_rates
+    pe = torch.zeros(seq_len, d_model)
+    pe[:, 0::2] = torch.sin(angle_rads[:, 0::2])  # even indices
+    pe[:, 1::2] = torch.cos(angle_rads[:, 1::2])  # odd indices
+    return pe
+```
+
+---
+
+### 🌀 Self-Attention
+
+The **core innovation** of Transformers.  
+Each word *attends* to every other word to capture contextual meaning.
+
+The formula:
+
+$$
+Attention(Q, K, V) = softmax\left(\frac{QK^T}{\sqrt{d_k}}\right) V
+$$
+
+Where:
+- **Q** = Queries  
+- **K** = Keys  
+- **V** = Values  
+
+#### Example:
+If the sentence is *“The cat sat on the mat”*,  
+- The word **“cat”** can attend strongly to **“sat”**, **“mat”**, etc.  
+
+---
+
+### 🎭 Multi-Head Attention
+
+Instead of one attention mechanism, we use multiple in parallel (heads).  
+This allows the model to learn **different types of relationships**.
+
+```python
+class MultiHeadAttention(torch.nn.Module):
+    def __init__(self, d_model, num_heads):
+        super().__init__()
+        assert d_model % num_heads == 0
+        self.d_head = d_model // num_heads
+        self.qkv_proj = torch.nn.Linear(d_model, 3*d_model)
+        self.o_proj = torch.nn.Linear(d_model, d_model)
+        self.num_heads = num_heads
+
+    def forward(self, x):
+        B, T, C = x.size()
+        qkv = self.qkv_proj(x).reshape(B, T, self.num_heads, 3*self.d_head)
+        q, k, v = qkv.chunk(3, dim=-1)
+        attn = (q @ k.transpose(-2, -1)) / (self.d_head ** 0.5)
+        attn = attn.softmax(dim=-1)
+        out = (attn @ v).transpose(1,2).reshape(B, T, C)
+        return self.o_proj(out)
+```
+
+---
+
+### 🔄 Feed Forward Networks (FFN)
+
+Each layer also has a simple MLP:  
+Two linear layers with a **ReLU/GELU activation** in between.
+
+---
+
+### ⚖️ Layer Normalization & Residuals
+
+- Residual connections help stabilize training.  
+- Layer normalization ensures smoother gradient flow.
+
+---
+
+## 📚 Scaling Laws & Training
+
+Recent research shows that Transformer performance improves predictably with:
+
+- **Model size** (parameters)
+- **Dataset size**
+- **Compute**
+
+This led to **scaling laws** powering GPT-3, PaLM, and other frontier models.
+
+---
+
+## ✅ Checklist for Understanding
+
+- [x] Why RNNs struggled  
+- [x] Transformer Encoder-Decoder overview  
+- [x] Positional Encoding  
+- [x] Self-Attention  
+- [x] Multi-Head Attention  
+- [x] Feed Forward Networks  
+- [x] Residuals + LayerNorm  
+
+---
+
+> *"Attention is not just a mechanism, it’s the foundation of intelligence in sequence models."*  
+> — Inspired by Vaswani et al., 2017
+
+---
+
+## 🖼️ Diagram
+
+You can include the classic architecture diagram here:
+
+<div class="row mt-3">
+  <div class="col-sm mt-3 mt-md-0">
+    {% include figure.liquid path="assets/img/transformer-diagram.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+  </div>
+</div>
+
+---
+
+## ⚡ Final Thoughts
+
+The Transformer revolutionized deep learning.  
+From **translation** to **LLMs** like GPT-4, Claude, and LLaMA,  
+its *self-attention-first* design is the core reason behind today’s AI boom.
+
+---
