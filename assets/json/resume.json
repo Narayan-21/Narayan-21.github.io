@@ -124,7 +124,7 @@
     { "language": "Hindi", "fluency": "Native", "icon": "" }
   ],
   "interests": [
-    { "name": "Machine Learning, Large Language Models, ML Systems, Parallel Programming, Agentic AI", "icon": "", "keywords": ["LLMs", "MoE", "VLMs", "Training", "Inference", "", "Agentic AI", "Language Modeling"] }
+    { "name": ["Machine Learning", "Language Modelling", "Large Language Models", "ML Systems", "Parallel Programming", "Agentic AI"], "icon": "" }
   ],
   "references": [],
   "projects": [
