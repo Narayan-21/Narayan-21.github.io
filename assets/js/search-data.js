@@ -73,11 +73,26 @@ ninja.data = [{
             window.open("https://medium.com/@al-folio/displaying-external-posts-on-your-al-folio-blog-b60a1d241a0a?source=rss-17feae71c3c4------2", "_blank");
           
         },
-      },{id: "books-the-godfather",
-          title: 'The Godfather',
+      },{id: "books-cuda-by-example",
+          title: 'Cuda by example',
           description: "",
           section: "Books",handler: () => {
-              window.location.href = "/books/the_godfather/";
+              window.location.href = "/books/cuda/";
+            },},{id: "books-designing-distributed-systems",
+          title: 'Designing Distributed Systems',
+          description: "",
+          section: "Books",handler: () => {
+              window.location.href = "/books/distributed/";
+            },},{id: "books-programming-massively-parallel-processors",
+          title: 'Programming Massively Parallel Processors',
+          description: "",
+          section: "Books",handler: () => {
+              window.location.href = "/books/parallel/";
+            },},{id: "books-python-concurrency-with-asyncio",
+          title: 'Python Concurrency with asyncio',
+          description: "",
+          section: "Books",handler: () => {
+              window.location.href = "/books/python/";
             },},{id: "news-a-simple-inline-announcement",
           title: 'A simple inline announcement.',
           description: "",
