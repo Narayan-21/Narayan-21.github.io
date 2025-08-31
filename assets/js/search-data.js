@@ -64,6 +64,11 @@ ninja.data = [{
           description: "",
           section: "Books",handler: () => {
               window.location.href = "/books/python/";
+            },},{id: "books-reinforcement-learning-an-introduction",
+          title: 'Reinforcement Learning - An Introduction',
+          description: "",
+          section: "Books",handler: () => {
+              window.location.href = "/books/rl/";
             },},{id: "news-a-simple-inline-announcement",
           title: 'A simple inline announcement.',
           description: "",
