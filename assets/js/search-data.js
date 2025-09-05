@@ -44,7 +44,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "books-cuda-by-example",
+        },{id: "post-understanding-transformers-the-architecture-behind-modern-llms",
+        
+          title: "Understanding Transformers — The Architecture Behind Modern LLMs",
+        
+        description: "A deep dive into the Transformer architecture — self-attention, multi-head attention, position encodings, and scaling laws.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2025/formatting-and-links/";
+          
+        },
+      },{id: "books-cuda-by-example",
           title: 'Cuda by example',
           description: "",
           section: "Books",handler: () => {
