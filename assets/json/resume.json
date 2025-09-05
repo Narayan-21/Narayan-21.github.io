@@ -36,8 +36,11 @@
       "endDate": "",
       "summary": "Enhancing LISA AI by incorporating multi‑modal generative AI capabilities and delivering end‑to‑end production features.",
       "highlights": [
-        "Expanded LISA AI with multiple generative AI capabilities (LLMs/VLMs).",
-        "Tech stack: Python, Docker, FastAPI, Llama 3.1, Deepseek r1, Qwen, PEFT/LoRA, Finetuning, Text2Mongo."
+        "Enhanced LISA AI with advanced generative AI features and built an MCP client for seamless integration with enterprise data sources and tools.",
+        "Deployed and optimized multiple LLMs on RTX-4090 GPUs, improving scalability to handle high-concurrency workloads with lower latency.",
+        "Instruction finetuned multiple Open-source LLMs such as Llama 3.1, Deepseek, Qwen for advanced reasoning tasks and instruction alignments.",
+        "Performed in-depth tuning of vLLM and SGLang frameworks with EAGLE/EAGLE-3 speculative decoding, achievingup to 2X higher throughput and 2.7–3.5X latency reduction in production.",
+        "Tech stack: - Python, Docker, MongoDB, FastAPI, MCP, vLLM, SGLang, GPU Optimizations, PyTorch, Supervised fine-tuning (SFT), Large Language Models."
       ]
     },
     {
