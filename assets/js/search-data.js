@@ -30,6 +30,13 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/publications/";
           },
+        },{id: "nav-readings",
+          title: "Readings",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/readings/index.html";
+          },
         },{id: "nav-repositories",
           title: "repositories",
           description: "",
@@ -88,6 +95,11 @@ ninja.data = [{
           description: "with background image",
           section: "Projects",handler: () => {
               window.location.href = "/projects/1_project/";
+            },},{id: "readings-how-to-think-about-gpus-a-special-section-of-39-how-to-scale-your-model-39",
+          title: 'How to think about GPUs - A Special section of &amp;#39;How to Scale...',
+          description: "",
+          section: "Readings",handler: () => {
+              window.location.href = "/readings/rd1";
             },},{
         id: 'social-email',
         title: 'email',
