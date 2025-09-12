@@ -4,42 +4,27 @@ permalink: /readings/
 title: Readings
 nav: true
 nav_order: 2
-pagination:
-  enabled: true
-  collection: readings
-  permalink: /readings/page/:num/
-  per_page: 15
-  sort_field: date
-  sort_reverse: true
 ---
 
 <div class="readings">
   <div class="header-bar">
     <h1>Readings</h1>
-    <h2>Interesting articles, papers, and resources</h2>
+    <p class="lead">A collection of interesting papers and articles</p>
   </div>
 
   <ul class="reading-list">
-    {% if page.pagination.enabled %}
-      {% assign readinglist = paginator.posts %}
-    {% else %}
-      {% assign readinglist = site.readings %}
-    {% endif %}
-
-    {% for item in readinglist %}
+    {% for item in site.readings %}
       <li class="reading-item">
-        <span class="reading-date">{{ item.date | date: '%b %d, %Y' }}</span>
         <a href="{% if item.redirect %}{{ item.redirect }}{% else %}{{ item.url | relative_url }}{% endif %}" 
            {% if item.redirect contains '://' %}target="_blank"{% endif %}>
           {{ item.title }}
         </a>
+        {% if item.description %}
+          <p class="reading-description">{{ item.description }}</p>
+        {% endif %}
       </li>
     {% endfor %}
   </ul>
-
-  {% if page.pagination.enabled %}
-    {% include pagination.liquid %}
-  {% endif %}
 </div>
 
 <style>
@@ -49,24 +34,23 @@ pagination:
 }
 
 .reading-item {
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #eee;
-}
-
-.reading-date {
-  display: inline-block;
-  min-width: 100px;
-  color: #666;
-  font-size: 0.9em;
+  margin-bottom: 2rem;
 }
 
 .reading-item a {
-  text-decoration: none;
+  font-size: 1.2rem;
   font-weight: 500;
+  text-decoration: none;
+  color: #000;
 }
 
 .reading-item a:hover {
   text-decoration: underline;
+}
+
+.reading-description {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0.25rem 0 0 0;
 }
 </style>
