@@ -15,7 +15,7 @@ nav_order: 2
   <ul class="reading-list">
     {% for item in site.readings %}
       <li class="reading-item">
-        <a href="{% if item.redirect %}{{ item.redirect }}{% else %}{{ item.url | relative_url }}{% endif %}" 
+        <a class="reading-title" href="{% if item.redirect %}{{ item.redirect }}{% else %}{{ item.url | relative_url }}{% endif %}" 
            {% if item.redirect contains '://' %}target="_blank"{% endif %}>
           {{ item.title }}
         </a>
@@ -37,20 +37,15 @@ nav_order: 2
   margin-bottom: 2rem;
 }
 
-.reading-item a {
+.reading-title {
   font-size: 1.2rem;
   font-weight: 500;
   text-decoration: none;
-  color: #000;
-}
-
-.reading-item a:hover {
-  text-decoration: underline;
 }
 
 .reading-description {
-  color: #666;
-  font-size: 0.9rem;
+  opacity: 0.7;
   margin: 0.25rem 0 0 0;
+  font-size: 0.9rem;
 }
 </style>
