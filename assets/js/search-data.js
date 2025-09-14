@@ -55,7 +55,12 @@ ninja.data = [{
             window.location.href = "/blog/2025/formatting-and-links/";
           
         },
-      },{id: "books-cuda-by-example",
+      },{id: "books-beej-39-s-guide-to-c-programming",
+          title: 'Beej&amp;#39;s Guide to C Programming',
+          description: "",
+          section: "Books",handler: () => {
+              window.location.href = "/books/beej/";
+            },},{id: "books-cuda-by-example",
           title: 'Cuda by example',
           description: "",
           section: "Books",handler: () => {
@@ -88,6 +93,11 @@ ninja.data = [{
           description: "with background image",
           section: "Projects",handler: () => {
               window.location.href = "/projects/1_project/";
+            },},{id: "readings-beej-39-s-guide-to-c-programming",
+          title: 'Beej&amp;#39;s Guide to C Programming',
+          description: "HTML simple E-book version of Beej&#39;s Guide to C Programming.",
+          section: "Readings",handler: () => {
+              window.location.href = "/readings/rd0/";
             },},{id: "readings-how-to-think-about-gpus-a-special-section-of-39-how-to-scale-your-model-39",
           title: 'How to think about GPUs - A Special section of &amp;#39;How to Scale...',
           description: "Part 12 of How To Scale Your Model (Part 11: Conclusion | The End)",
