@@ -95,7 +95,7 @@ ninja.data = [{
               window.location.href = "/projects/1_project/";
             },},{id: "readings-beej-39-s-guide-to-c-programming",
           title: 'Beej&amp;#39;s Guide to C Programming',
-          description: "HTML simple E-book version of Beej&#39;s Guide to C Programming.",
+          description: "Lightweight HTML e-book format of Beej&#39;s Guide to C Programming.",
           section: "Readings",handler: () => {
               window.location.href = "/readings/rd0/";
             },},{id: "readings-how-to-think-about-gpus-a-special-section-of-39-how-to-scale-your-model-39",
