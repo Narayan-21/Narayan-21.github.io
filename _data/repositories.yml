@@ -1,0 +1,11 @@
+github_users:
+  - Narayan-21
+
+repo_description_lines_max: 2
+
+github_repos:
+  - Narayan-21/langchain
+  - Narayan-21/RL_Implementations
+  - Narayan-21/Semantic-segmentation-of-CXR-images-from-pneumonia-dataset-using-U-NET-architecture
+  - Narayan-21/Deep-Convolutional-Generative-Adversarial-network-implementation-using-PyTorch-on-MNIST-dataset-
+  - Narayan-21/Pytorch_Implementations

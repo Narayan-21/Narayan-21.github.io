@@ -1,0 +1,31 @@
+{% comment %}
+  Formats a month count as "1 yr 4 mos". Pass either months=<n>, or start="YYYY-MM"
+  (and optionally end="YYYY-MM", defaulting to the build date) to count months inclusively.
+{% endcomment %}
+{% if include.start %}
+  {% assign d_start = include.start | split: '-' %}
+  {% if include.end %}
+    {% assign d_end = include.end | split: '-' %}
+  {% else %}
+    {% assign d_end = site.time | date: '%Y-%m' | split: '-' %}
+  {% endif %}
+  {% assign d_start_m = d_start[0] | times: 12 | plus: d_start[1] %}
+  {% assign d_end_m = d_end[0] | times: 12 | plus: d_end[1] %}
+  {% assign d_months = d_end_m | minus: d_start_m | plus: 1 %}
+{% else %}
+  {% assign d_months = include.months | plus: 0 %}
+{% endif %}
+{% assign d_y = d_months | divided_by: 12 %}
+{% assign d_m = d_months | modulo: 12 %}
+{% assign d_out = '' %}
+{% if d_y > 0 %}
+  {% if d_y == 1 %}{% assign d_unit = ' yr' %}{% else %}{% assign d_unit = ' yrs' %}{% endif %}
+  {% assign d_out = d_y | append: d_unit %}
+{% endif %}
+{% if d_m > 0 %}
+  {% if d_m == 1 %}{% assign d_unit = ' mo' %}{% else %}{% assign d_unit = ' mos' %}{% endif %}
+  {% assign d_part = d_m | append: d_unit %}
+  {% if d_out != '' %}{% assign d_out = d_out | append: ' ' %}{% endif %}
+  {% assign d_out = d_out | append: d_part %}
+{% endif %}
+{{- d_out -}}

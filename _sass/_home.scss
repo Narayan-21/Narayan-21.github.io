@@ -1,0 +1,249 @@
+/*******************************************************************************
+ * Home page (about) sections
+ ******************************************************************************/
+
+.home-hero {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  margin: 0.5rem 0 2.5rem;
+
+  .home-hero-text {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .home-hero-photo {
+    flex: 0 0 220px;
+    text-align: center;
+
+    img {
+      width: 100%;
+      border-radius: 14px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column-reverse;
+    align-items: center;
+
+    .home-hero-photo {
+      flex-basis: auto;
+      max-width: 200px;
+    }
+  }
+}
+
+.home-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--global-divider-color);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  color: var(--global-text-color-light);
+}
+
+.home-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+}
+
+.home-headline {
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0.9rem 0 0.8rem;
+}
+
+.home-location {
+  margin-top: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--global-text-color-light);
+}
+
+.home-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+
+.home-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--global-theme-color);
+  border-radius: 8px;
+  color: var(--global-theme-color) !important;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none !important;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+
+  &:hover {
+    background: var(--global-theme-color);
+    color: var(--global-hover-text-color) !important;
+  }
+}
+
+.home-btn-primary {
+  background: var(--global-theme-color);
+  color: var(--global-hover-text-color) !important;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.home-section {
+  margin-bottom: 2.5rem;
+}
+
+
+
+
+
+
+.home-timeline {
+  list-style: none;
+  padding-left: 1.25rem;
+  margin: 0;
+  border-left: 2px solid var(--global-divider-color);
+
+  li {
+    position: relative;
+    padding: 0 0 1.25rem 0.75rem;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: calc(-1.25rem - 6px);
+      top: 0.45rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--global-theme-color);
+      box-shadow: 0 0 0 3px var(--global-bg-color);
+    }
+
+    &:last-child {
+      padding-bottom: 0;
+    }
+
+    p {
+      margin: 0.25rem 0 0;
+      font-size: 0.92rem;
+      color: var(--global-text-color);
+      opacity: 0.8;
+    }
+  }
+
+  .home-tl-date {
+    float: right;
+    font-size: 0.85rem;
+    color: var(--global-text-color-light);
+
+    @media (max-width: 576px) {
+      float: none;
+      display: block;
+    }
+  }
+}
+
+.home-h2 {
+  font-size: 1.4rem;
+  font-weight: 400;
+  margin: 2rem 0 0.75rem;
+}
+
+.home-total {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--global-text-color-light);
+}
+
+.home-more {
+  margin-top: 1rem;
+  font-weight: 500;
+}
+
+.home-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.home-chip {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--global-divider-color);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  background: var(--global-card-bg-color);
+}
+
+.home-edu {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+
+  h4 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+
+  p {
+    margin-bottom: 0.3rem;
+  }
+}
+
+.home-certs {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--global-divider-color);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    i {
+      width: 1.25rem;
+      color: var(--global-theme-color);
+    }
+  }
+}
+
+/*******************************************************************************
+ * CV page (embedded resume PDF)
+ ******************************************************************************/
+
+.cv-pdf-download {
+  text-align: right;
+  margin-bottom: 0.5rem;
+}
+
+.cv-pdf {
+  display: block;
+  width: 100%;
+  height: 80vh;
+  min-height: 600px;
+  border: 1px solid var(--global-divider-color);
+  border-radius: 6px;
+}
