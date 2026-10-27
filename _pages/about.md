@@ -31,7 +31,7 @@ latest_posts:
       </dd>
       <dt>Learning</dt>
       <dd>
-        <span class="home-chip home-chip-accent">Computer vision</span>
+        <span class="home-chip home-chip-accent">Time series &amp; forecasting</span>
         <span class="home-chip home-chip-accent">Inference engineering</span>
         <span class="home-chip home-chip-accent">Reinforcement learning</span>
         <span class="home-chip home-chip-accent">Embodied AI</span>
