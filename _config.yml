@@ -7,9 +7,9 @@ first_name: Narayan
 middle_name:
 last_name: Jangid
 contact_note: >
-  Email or LinkedIn is the best way to reach me. I'm always happy to talk about agentic systems, MCP, retrieval, inference engineering, and reinforcement learning.
+  Email or LinkedIn is the best way to reach me. I'm always happy to talk about LLM systems, reinforcement learning, computer vision, embodied AI, or whatever I'm currently learning.
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  Narayan Jangid — Applied AI/ML Engineer in Bengaluru working on agentic systems, MCP servers, retrieval pipelines, inference engineering, and reinforcement learning.
+  Narayan Jangid — Applied AI/ML Engineer in Bengaluru working on NLP and LLM systems, and writing about computer vision, inference engineering, reinforcement learning and embodied AI.
 footer_text: >
   Built with <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> and the <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
   Hosted on <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
@@ -86,8 +86,9 @@ bing_site_verification: # out your bing-site-verification ID (Bing Webmaster)
 # Blog
 # -----------------------------------------------------------------------------
 
-blog_name: Blog # blog_name will be displayed in your blog page
-blog_description: notes on agentic systems, retrieval, inference engineering, and reinforcement learning
+blog_name: Posts # blog_name will be displayed in your blog page
+blog_description: What I'm studying, explained in my own words
+# the topic list for the posts page lives in _data/post_topics.yml
 permalink: /blog/:year/:title/
 lsi: false # produce an index for related posts
 

@@ -1,197 +1,173 @@
 ---
 layout: default
 permalink: /blog/
-title: blog
-nav: false
-published: false # set to true (and nav: true) once there are posts
+title: posts
+nav: true
 nav_order: 1
-pagination:
-  enabled: true
-  collection: posts
-  permalink: /page/:num/
-  per_page: 5
-  sort_field: date
-  sort_reverse: true
-  trail:
-    before: 1 # The number of links before the current page
-    after: 3 # The number of links after the current page
 ---
 
-<div class="post">
+{% comment %}
+  Posts: every post, newest first, with a topic sidebar (a post's tags) and a sort switch.
+  Filtering and sorting run client-side, so the full list is rendered here without pagination;
+  without JavaScript the page is still a complete, newest-first list.
+{% endcomment %}
 
-{% assign blog_name_size = site.blog_name | size %}
-{% assign blog_description_size = site.blog_description | size %}
+{% assign posts = site.posts | where_exp: "post", "post.hidden != true" %}
 
-{% if blog_name_size > 0 or blog_description_size > 0 %}
+{% assign topics = site.data.post_topics %}
+{% if topics == nil %}{% assign topics = "" | split: "," %}{% endif %}
+{% for tag in site.tags %}
+  {% unless topics contains tag[0] %}
+    {% assign topics = topics | push: tag[0] %}
+  {% endunless %}
+{% endfor %}
 
+<div class="post posts-page">
   <div class="header-bar">
     <h1>{{ site.blog_name }}</h1>
-    <h2>{{ site.blog_description }}</h2>
+    <p class="lead">{{ site.blog_description }}</p>
   </div>
-  {% endif %}
 
-{% if site.display_tags and site.display_tags.size > 0 or site.display_categories and site.display_categories.size > 0 %}
+  <div class="posts-layout">
+    <div class="posts-main">
+      <p class="posts-status" aria-live="polite"></p>
 
-  <div class="tag-category-list">
-    <ul class="p-0 m-0">
-      {% for tag in site.display_tags %}
-        <li>
-          <i class="fa-solid fa-hashtag fa-sm"></i> <a href="{{ tag | slugify | prepend: '/blog/tag/' | relative_url }}">{{ tag }}</a>
-        </li>
-        {% unless forloop.last %}
-          <p>&bull;</p>
-        {% endunless %}
-      {% endfor %}
-      {% if site.display_categories.size > 0 and site.display_tags.size > 0 %}
-        <p>&bull;</p>
-      {% endif %}
-      {% for category in site.display_categories %}
-        <li>
-          <i class="fa-solid fa-tag fa-sm"></i> <a href="{{ category | slugify | prepend: '/blog/category/' | relative_url }}">{{ category }}</a>
-        </li>
-        {% unless forloop.last %}
-          <p>&bull;</p>
-        {% endunless %}
-      {% endfor %}
-    </ul>
-  </div>
-  {% endif %}
+      <ul class="posts-list">
+        {% for post in posts %}
+          {% assign read_time = post.content | number_of_words | divided_by: 180 | plus: 1 %}
+          {% capture post_topics %}{% for tag in post.tags %}{{ tag | slugify }} {% endfor %}{% endcapture %}
+          <li class="posts-item" data-topics="{{ post_topics | strip }}" data-date="{{ post.date | date: '%s' }}">
+            <p class="posts-meta">
+              <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %d, %Y' }}</time>
+              &middot; {{ read_time }} min read
+            </p>
+            <h3 class="posts-title">
+              <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+            </h3>
+            {% if post.description %}
+              <p class="posts-description">{{ post.description }}</p>
+            {% endif %}
+            {% if post.tags.size > 0 %}
+              <p class="posts-tags">
+                {% for tag in post.tags %}
+                  <a class="posts-tag" href="{{ '/blog/' | relative_url }}?topic={{ tag | slugify }}" data-topic="{{ tag | slugify }}">{{ tag }}</a>
+                {% endfor %}
+              </p>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
 
-{% assign featured_posts = site.posts | where: "featured", "true" %}
-{% if featured_posts.size > 0 %}
-<br>
-
-<div class="container featured-posts">
-{% assign is_even = featured_posts.size | modulo: 2 %}
-<div class="row row-cols-{% if featured_posts.size <= 2 or is_even == 0 %}2{% else %}3{% endif %}">
-{% for post in featured_posts %}
-<div class="col mb-4">
-<a href="{{ post.url | relative_url }}">
-<div class="card hoverable">
-<div class="row g-0">
-<div class="col-md-12">
-<div class="card-body">
-<div class="float-right">
-<i class="fa-solid fa-thumbtack fa-xs"></i>
-</div>
-<h3 class="card-title text-lowercase">{{ post.title }}</h3>
-<p class="card-text">{{ post.description }}</p>
-
-                    {% if post.external_source == blank %}
-                      {% assign read_time = post.content | number_of_words | divided_by: 180 | plus: 1 %}
-                    {% else %}
-                      {% assign read_time = post.feed_content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
-                    {% endif %}
-                    {% assign year = post.date | date: "%Y" %}
-
-                    <p class="post-meta">
-                      {{ read_time }} min read &nbsp; &middot; &nbsp;
-                      <a href="{{ year | prepend: '/blog/' | relative_url }}">
-                        <i class="fa-solid fa-calendar fa-sm"></i> {{ year }} </a>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-      {% endfor %}
-      </div>
-    </div>
-    <hr>
-
-{% endif %}
-
-  <ul class="post-list">
-
-    {% if page.pagination.enabled %}
-      {% assign postlist = paginator.posts %}
-    {% else %}
-      {% assign postlist = site.posts %}
-    {% endif %}
-
-    {% for post in postlist %}
-
-    {% if post.external_source == blank %}
-      {% assign read_time = post.content | number_of_words | divided_by: 180 | plus: 1 %}
-    {% else %}
-      {% assign read_time = post.feed_content | strip_html | number_of_words | divided_by: 180 | plus: 1 %}
-    {% endif %}
-    {% assign year = post.date | date: "%Y" %}
-    {% assign tags = post.tags | join: "" %}
-    {% assign categories = post.categories | join: "" %}
-
-    <li>
-
-{% if post.thumbnail %}
-
-<div class="row">
-          <div class="col-sm-9">
-{% endif %}
-        <h3>
-        {% if post.redirect == blank %}
-          <a class="post-title" href="{{ post.url | relative_url }}">{{ post.title }}</a>
-        {% elsif post.redirect contains '://' %}
-          <a class="post-title" href="{{ post.redirect }}" target="_blank">{{ post.title }}</a>
-          <svg width="2rem" height="2rem" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-            <path d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9" class="icon_svg-stroke" stroke="#999" stroke-width="1.5" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path>
-          </svg>
-        {% else %}
-          <a class="post-title" href="{{ post.redirect | relative_url }}">{{ post.title }}</a>
-        {% endif %}
-      </h3>
-      <p>{{ post.description }}</p>
-      <p class="post-meta">
-        {{ read_time }} min read &nbsp; &middot; &nbsp;
-        {{ post.date | date: '%B %d, %Y' }}
-        {% if post.external_source %}
-        &nbsp; &middot; &nbsp; {{ post.external_source }}
-        {% endif %}
+      <p class="posts-empty" hidden>
+        Nothing here on this topic yet. <a href="{{ '/blog/' | relative_url }}" data-topic="">See all posts</a>.
       </p>
-      <p class="post-tags">
-        <a href="{{ year | prepend: '/blog/' | relative_url }}">
-          <i class="fa-solid fa-calendar fa-sm"></i> {{ year }} </a>
+    </div>
 
-          {% if tags != "" %}
-          &nbsp; &middot; &nbsp;
-            {% for tag in post.tags %}
-            <a href="{{ tag | slugify | prepend: '/blog/tag/' | relative_url }}">
-              <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}</a>
-              {% unless forloop.last %}
-                &nbsp;
-              {% endunless %}
-              {% endfor %}
-          {% endif %}
+    <aside class="posts-sidebar" aria-label="Filter and sort posts">
+      <h2 class="posts-sidebar-heading">Topics</h2>
+      <div class="posts-topics" role="group" aria-label="Topics">
+        <button type="button" class="posts-chip" data-topic="" aria-pressed="true">
+          <span class="posts-chip-name">All</span> <span class="posts-count">{{ posts.size }}</span>
+        </button>
+        {% for topic in topics %}
+          {% assign topic_count = site.tags[topic] | size %}
+          <button
+            type="button"
+            class="posts-chip"
+            data-topic="{{ topic | slugify }}"
+            aria-pressed="false"
+            {% if topic_count == 0 %}
+              disabled title="Nothing here yet"
+            {% endif %}
+          >
+            <span class="posts-chip-name">{{ topic }}</span> <span class="posts-count">{{ topic_count }}</span>
+          </button>
+        {% endfor %}
+      </div>
 
-          {% if categories != "" %}
-          &nbsp; &middot; &nbsp;
-            {% for category in post.categories %}
-            <a href="{{ category | slugify | prepend: '/blog/category/' | relative_url }}">
-              <i class="fa-solid fa-tag fa-sm"></i> {{ category }}</a>
-              {% unless forloop.last %}
-                &nbsp;
-              {% endunless %}
-              {% endfor %}
-          {% endif %}
-    </p>
-
-{% if post.thumbnail %}
-
-</div>
-
-  <div class="col-sm-3">
-    <img class="card-img" src="{{ post.thumbnail | relative_url }}" style="object-fit: cover; height: 90%" alt="image">
+      <h2 class="posts-sidebar-heading">Order</h2>
+      <div class="posts-sort">
+        <label for="posts-sort-select" class="sr-only">Sort</label>
+        <select id="posts-sort-select" class="posts-select">
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+        </select>
+        <a class="posts-rss" href="{{ '/feed.xml' | relative_url }}" title="RSS feed" aria-label="RSS feed"><i class="fa-solid fa-square-rss"></i></a>
+      </div>
+    </aside>
   </div>
 </div>
-{% endif %}
-    </li>
 
-    {% endfor %}
+<script>
+  (function () {
+    var list = document.querySelector(".posts-list");
+    var items = Array.prototype.slice.call(list.querySelectorAll(".posts-item"));
+    var chips = Array.prototype.slice.call(document.querySelectorAll(".posts-chip"));
+    var select = document.getElementById("posts-sort-select");
+    var status = document.querySelector(".posts-status");
+    var empty = document.querySelector(".posts-empty");
+    var labels = {};
+    chips.forEach(function (c) {
+      labels[c.dataset.topic] = c.querySelector(".posts-chip-name").textContent.trim();
+    });
 
-  </ul>
+    var params = new URLSearchParams(window.location.search);
+    var state = {
+      topic: labels.hasOwnProperty(params.get("topic")) ? params.get("topic") : "",
+      sort: params.get("sort") === "oldest" ? "oldest" : "newest",
+    };
 
-{% if page.pagination.enabled %}
-{% include pagination.liquid %}
-{% endif %}
+    function render() {
+      chips.forEach(function (c) {
+        c.setAttribute("aria-pressed", String(c.dataset.topic === state.topic));
+      });
+      select.value = state.sort;
 
-</div>
+      items.sort(function (a, b) {
+        var d = Number(b.dataset.date) - Number(a.dataset.date);
+        return state.sort === "oldest" ? -d : d;
+      });
+      var shown = 0;
+      items.forEach(function (item) {
+        var match = !state.topic || item.dataset.topics.split(" ").indexOf(state.topic) !== -1;
+        item.hidden = !match;
+        if (match) shown++;
+        list.appendChild(item);
+      });
+
+      empty.hidden = shown > 0;
+      var noun = shown === 1 ? "post" : "posts";
+      status.textContent = state.topic ? shown + " " + noun + " on " + labels[state.topic] : "";
+
+      var q = new URLSearchParams();
+      if (state.topic) q.set("topic", state.topic);
+      if (state.sort === "oldest") q.set("sort", "oldest");
+      var qs = q.toString();
+      history.replaceState(null, "", window.location.pathname + (qs ? "?" + qs : ""));
+    }
+
+    function pick(topic) {
+      state.topic = topic;
+      render();
+    }
+
+    chips.forEach(function (c) {
+      c.addEventListener("click", function () {
+        pick(c.dataset.topic === state.topic ? "" : c.dataset.topic);
+      });
+    });
+    document.querySelectorAll(".posts-tag, .posts-empty a").forEach(function (a) {
+      a.addEventListener("click", function (e) {
+        e.preventDefault();
+        pick(a.dataset.topic);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    });
+    select.addEventListener("change", function () {
+      state.sort = select.value;
+      render();
+    });
+
+    render();
+  })();
+</script>

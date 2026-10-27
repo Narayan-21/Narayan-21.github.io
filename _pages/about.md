@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: Applied AI/ML Engineer · Agentic systems, retrieval, inference engineering & reinforcement learning · Bengaluru
+subtitle: Applied AI/ML Engineer · Bengaluru
 
 social: true # includes social icons at the bottom of the page
 
@@ -12,16 +12,36 @@ latest_posts:
 
 <section class="home-hero">
   <div class="home-hero-text">
-    <p class="home-eyebrow"><span class="home-dot"></span> Data Engineer (AI Infra) at <a href="https://recruiterflow.com" target="_blank" rel="noopener noreferrer">Recruiterflow</a></p>
-    <h2 class="home-headline">I take ML and GenAI systems from prototype to production.</h2>
-    <p>
-      I'm an Applied AI/ML Engineer with <strong>3+ years</strong> of shipping production ML, including
-      <strong>1.5+ years building agentic systems</strong>: multi-step agent workflows, MCP servers and clients,
-      and retrieval pipelines over enterprise data. I pair classical ML (time-series forecasting, gradient-boosted
-      trees) with LLM fine-tuning, inference optimization, and metric-driven evaluation, and I've led a 5-member AI team.
+    <p class="home-intro">
+      I'm an Applied AI/ML Engineer. Professionally, most of my work has been on <strong>NLP and LLM systems</strong>:
+      agent workflows, MCP servers and clients, retrieval over enterprise data, and fine-tuning and serving the models behind them.
     </p>
+    <p class="home-intro">
+      My interests go well beyond what I've worked on so far. I spend a lot of my own time learning other parts of AI,
+      and I write up what I study in <a href="{{ '/blog/' | relative_url }}">my posts</a>.
+    </p>
+
+    <dl class="home-focus">
+      <dt>At work</dt>
+      <dd>
+        <span class="home-chip">NLP</span>
+        <span class="home-chip">LLM systems</span>
+        <span class="home-chip">Agents &amp; MCP</span>
+        <span class="home-chip">Retrieval &amp; RAG</span>
+      </dd>
+      <dt>Learning</dt>
+      <dd>
+        <span class="home-chip home-chip-accent">Computer vision</span>
+        <span class="home-chip home-chip-accent">Inference engineering</span>
+        <span class="home-chip home-chip-accent">Reinforcement learning</span>
+        <span class="home-chip home-chip-accent">Embodied AI</span>
+        <span class="home-chip home-chip-more">and more</span>
+      </dd>
+    </dl>
+
     <div class="home-cta">
       <a class="home-btn home-btn-primary" href="{{ '/cv/' | relative_url }}"><i class="fa-solid fa-file-lines"></i> Resume</a>
+      <a class="home-btn" href="{{ '/blog/' | relative_url }}"><i class="fa-solid fa-pen-nib"></i> Posts</a>
       <a class="home-btn" href="mailto:{{ site.data.socials.email }}"><i class="fa-solid fa-envelope"></i> Get in touch</a>
     </div>
   </div>
@@ -31,55 +51,69 @@ latest_posts:
   </div>
 </section>
 
-<h2 class="home-h2">what I work on</h2>
-
-- **Agentic systems & MCP:** multi-step agent workflows in LangGraph, graph-based reasoning, and MCP servers and clients that expose real-time business data as agent tools.
-- **Retrieval & search:** natural-language search pipelines, OpenSearch indexing and retrieval at multi-tenant scale, and RAG over enterprise data.
-- **Inference engineering & fine-tuning:** vLLM/SGLang tuning, speculative decoding, latency–throughput benchmarking, and instruction fine-tuning (SFT, QLoRA).
-- **Classical ML & forecasting:** time-series forecasting (ARIMA/SARIMA), gradient-boosted trees, document intelligence, OCR, and vision-language models.
-
 <section class="home-section">
   <h2 class="home-h2">experience <span class="home-total">{% include duration.liquid start="2023-06" %} in total</span></h2>
-  <ol class="home-timeline">
-    <li>
-      <div class="home-tl-head"><strong>Data Engineer (AI Infra)</strong> · Recruiterflow <span class="home-tl-date">Apr 2026 – Present · {% include duration.liquid start="2026-04" %}</span></div>
-      <p>Built the Recruiterflow MCP server for Claude, the Natural Language Search data pipeline, and a rebuilt OpenSearch Omni-Search with shared indexes.</p>
+
+  <ol class="xp">
+    <li class="xp-item xp-current">
+      <div class="xp-when">Apr 2026 – Present<span>{% include duration.liquid start="2026-04" %}</span></div>
+      <div class="xp-body">
+        <h3 class="xp-company">Recruiterflow</h3>
+        <div class="xp-role">
+          <h4>Data Engineer (AI Infra)</h4>
+          <ul>
+            <li>Architected the Natural Language Search data pipeline, processing 200K+ candidates and contacts and 10K+ jobs and deals a day to power LLM-driven search.</li>
+            <li>Migrated the company-enrichment pipeline off a legacy system, adding caching and request optimizations that cut API costs by over 2.5×.</li>
+          </ul>
+        </div>
+      </div>
     </li>
-    <li>
-      <div class="home-tl-head"><strong>Machine Learning Engineer</strong> · Kloudspot <span class="home-tl-date">Mar 2025 – Apr 2026 · {% include duration.liquid months=13 %}</span></div>
-      <p>Led the design of LISA AI, an enterprise AI assistant, and a 5-member AI team. Built agentic workflows and an MCP client, and tuned LLM serving for up to 2× throughput.</p>
+    <li class="xp-item">
+      <div class="xp-when">Mar 2025 – Apr 2026<span>{% include duration.liquid months=13 %}</span></div>
+      <div class="xp-body">
+        <h3 class="xp-company">Kloudspot</h3>
+        <div class="xp-role">
+          <h4>Machine Learning Engineer</h4>
+          <ul>
+            <li>Led the end-to-end design of LISA AI, an enterprise AI assistant, and managed and mentored a 5-member AI team.</li>
+            <li>Benchmarked inference strategies and tuned vLLM/SGLang with EAGLE-3 speculative decoding for up to 2× throughput and 2.7–3.5× lower latency.</li>
+          </ul>
+        </div>
+      </div>
     </li>
-    <li>
-      <div class="home-tl-head"><strong>Associate Data Scientist</strong> · Celebal Technologies <span class="home-tl-date">Nov 2023 – Feb 2025 · {% include duration.liquid months=16 %}</span></div>
-      <p>Built energy demand forecasting, Azure OpenAI document intelligence, an on-prem OCR pipeline, and hybrid edge–cloud VLM inference (77.9% mAP).</p>
-    </li>
-    <li>
-      <div class="home-tl-head"><strong>Data Science Intern</strong> · Celebal Technologies <span class="home-tl-date">Jun 2023 – Oct 2023 · {% include duration.liquid months=5 %}</span></div>
-      <p>Fine-tuned GPT-3.5 and Mistral 7B for text-to-SQL/NoSQL (95%+ DataCompy). Raised tabular RAG accuracy from 60% to 85%.</p>
+    <li class="xp-item">
+      <div class="xp-when">Jun 2023 – Feb 2025<span>{% include duration.liquid months=21 %}</span></div>
+      <div class="xp-body">
+        <h3 class="xp-company">Celebal Technologies</h3>
+        <div class="xp-role">
+          <h4>Associate Data Scientist <span class="xp-role-date">Nov 2023 – Feb 2025</span></h4>
+          <ul>
+            <li>Led Azure OpenAI and Document Intelligence solutions to extract, embed and index enterprise documents, improving BLEU by 15%.</li>
+            <li>Designed a hybrid edge–cloud VLM inference system for real-time video analytics, reaching 77.9% mAP.</li>
+          </ul>
+        </div>
+        <div class="xp-role">
+          <h4>Data Science Intern <span class="xp-role-date">Jun 2023 – Oct 2023</span></h4>
+          <ul>
+            <li>Fine-tuned GPT-3.5-turbo and Mistral 7B for text-to-query generation (SQL, NoSQL), with DataCompy scores above 95%.</li>
+            <li>Improved a RAG pipeline over tabular data, raising search-result accuracy from 60% to 85%.</li>
+          </ul>
+        </div>
+      </div>
     </li>
   </ol>
   <p class="home-more"><a href="{{ '/cv/' | relative_url }}">View full resume →</a></p>
 </section>
 
 <section class="home-section">
-  <h2 class="home-h2">toolbox</h2>
-  <div class="home-chips">
-    {% assign tools = "Python,PyTorch,LangGraph,LangChain,LlamaIndex,MCP,RAG,vLLM,SGLang,PEFT/QLoRA,Transformers,XGBoost,LightGBM,OpenSearch,Elasticsearch,Redis,Celery,FastAPI,Flask,PySpark,Databricks,Docker,AWS,Azure,PostgreSQL,MongoDB" | split: "," %}
-    {% for t in tools %}<span class="home-chip">{{ t }}</span>{% endfor %}
-  </div>
-</section>
-
-<section class="home-section">
-  <h2 class="home-h2">education &amp; certifications</h2>
-  <div class="home-edu">
-    <div>
-      <h4>IISER Kolkata</h4>
-      <p>BS-MS Dual Degree in Geological Sciences, Minor in Physics · 2017 – 2022</p>
+  <h2 class="home-h2">education</h2>
+  <div class="home-edu-card">
+    <i class="fa-solid fa-graduation-cap home-edu-icon"></i>
+    <div class="home-edu-text">
+      <h3>IISER Kolkata</h3>
+      <p>BS-MS Dual Degree in Geological Sciences, Minor in Physics</p>
+      <a href="{{ '/research/' | relative_url }}">Master's thesis →</a>
     </div>
-    <ul class="home-certs">
-      <li><i class="fa-brands fa-microsoft"></i> Azure Data Scientist Associate</li>
-      <li><i class="fa-brands fa-microsoft"></i> Azure AI Engineer Associate</li>
-      <li><i class="fa-solid fa-certificate"></i> Databricks Generative AI Engineer Associate</li>
-    </ul>
+    <span class="home-edu-date">2017 – 2022</span>
   </div>
 </section>

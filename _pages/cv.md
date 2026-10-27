@@ -3,7 +3,7 @@ layout: page
 permalink: /cv/
 title: cv
 nav: true
-nav_order: 1
+nav_order: 2
 # Previous structured CV page, rendered from assets/json/resume.json by the cv layout.
 # Kept for later; to restore it, uncomment these lines and remove the layout/PDF embed here.
 # layout: cv

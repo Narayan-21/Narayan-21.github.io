@@ -1,0 +1,13 @@
+# Topics shown in the sidebar of the Posts page (/blog/), in this order.
+#
+# - To add a topic: add a new line below, e.g.  - Computer Vision
+# - To remove one: delete its line.
+# - To use a topic on a post, put the same name in that post's front matter:
+#     tags: [RL, LLM]
+#
+# Topics listed here that no post uses yet are shown greyed out.
+# Any tag used on a post but missing from this list is still added to the sidebar automatically (at the end).
+
+- RL
+- LLM
+- Inference Engineering

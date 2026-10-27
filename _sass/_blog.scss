@@ -1,0 +1,380 @@
+/*******************************************************************************
+ * Posts (blog) listing with topic sidebar, and in-post tables/charts
+ ******************************************************************************/
+
+.posts-page .header-bar {
+  padding-bottom: 2rem;
+
+  .lead {
+    max-width: 36rem;
+    margin: 0 auto;
+    color: var(--global-text-color-light);
+  }
+}
+
+.posts-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 200px;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.posts-sidebar {
+  position: sticky;
+  top: 5rem;
+  padding: 1.75rem 0 0 1.5rem;
+  border-left: 1px solid var(--global-divider-color);
+}
+
+.posts-sidebar-heading {
+  margin: 0 0 0.6rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--global-text-color-light);
+
+  &:not(:first-child) {
+    margin-top: 1.75rem;
+  }
+}
+
+.posts-topics {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.posts-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.3rem 0.6rem;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--global-text-color);
+  font-size: 0.92rem;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+
+  &:hover:not(:disabled) {
+    color: var(--global-theme-color);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--global-theme-color);
+    outline-offset: 1px;
+  }
+
+  &[aria-pressed="true"] {
+    background: var(--global-theme-color);
+    color: var(--global-hover-text-color);
+
+    .posts-count {
+      opacity: 0.85;
+    }
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.45;
+  }
+
+  .posts-count {
+    font-size: 0.78rem;
+    opacity: 0.6;
+  }
+}
+
+.posts-sort {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.posts-select {
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--global-divider-color);
+  border-radius: 8px;
+  background: var(--global-bg-color);
+  color: var(--global-text-color);
+  font-size: 0.88rem;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid var(--global-theme-color);
+    outline-offset: 2px;
+  }
+}
+
+.posts-rss {
+  color: var(--global-text-color-light) !important;
+  font-size: 1.25rem;
+
+  &:hover {
+    color: var(--global-theme-color) !important;
+  }
+}
+
+.posts-status {
+  margin: 1rem 0 0;
+  font-size: 0.88rem;
+  color: var(--global-text-color-light);
+
+  &:empty {
+    display: none;
+  }
+}
+
+.posts-list {
+  list-style: none;
+  margin: 0 0 2.5rem;
+  padding: 0;
+}
+
+.posts-item {
+  padding: 1.75rem 0;
+  border-bottom: 1px solid var(--global-divider-color);
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.posts-meta {
+  margin: 0 0 0.35rem;
+  font-size: 0.85rem;
+  color: var(--global-text-color-light);
+}
+
+.posts-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.3;
+
+  a {
+    color: var(--global-text-color);
+
+    &:hover {
+      color: var(--global-theme-color);
+      text-decoration: none;
+    }
+  }
+}
+
+.posts-description {
+  margin: 0 0 0.75rem;
+  color: var(--global-text-color);
+  opacity: 0.85;
+}
+
+.posts-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+}
+
+.posts-tag {
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  background: var(--global-divider-color);
+  color: var(--global-text-color) !important;
+  font-size: 0.78rem;
+
+  &:hover {
+    background: var(--global-theme-color);
+    color: var(--global-hover-text-color) !important;
+    text-decoration: none;
+  }
+}
+
+.posts-empty {
+  padding: 2rem 0;
+  text-align: center;
+  color: var(--global-text-color-light);
+}
+
+/* Narrow screens: the sidebar moves above the list and topics become wrapping chips */
+@media (max-width: 768px) {
+  .posts-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .posts-sidebar {
+    position: static;
+    order: -1;
+    padding: 1.25rem 0 1rem;
+    border-left: none;
+    border-bottom: 1px solid var(--global-divider-color);
+  }
+
+  .posts-sidebar-heading {
+    display: none;
+  }
+
+  .posts-topics {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .posts-chip {
+    width: auto;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--global-divider-color);
+    border-radius: 999px;
+    font-size: 0.88rem;
+  }
+
+  .posts-sort {
+    margin-top: 0.85rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .posts-page .header-bar h1 {
+    font-size: 3.5rem;
+  }
+}
+
+/* Tables inside posts: ruled rows, room to breathe, sideways scroll on narrow screens */
+.post-content #markdown-content table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 1.25rem 0 1.5rem;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 0.45rem 1rem 0.45rem 0;
+    font-size: 0.92rem;
+    vertical-align: top;
+    border-bottom: 1px solid var(--global-divider-color);
+  }
+
+  th {
+    border-bottom-width: 2px;
+    white-space: nowrap;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+/* Long equations scroll sideways instead of overflowing the column */
+.post-content mjx-container[display="true"] {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  padding: 0.25rem 0;
+}
+
+/* On phones the TOC sidebar would stack above the whole post; the post's own roadmap covers it */
+@media (max-width: 575.98px) {
+  #toc-sidebar {
+    display: none;
+  }
+}
+
+/* Charts embedded in posts: static SVG coloured from the theme, so they follow light/dark mode */
+.note-chart {
+  margin: 1.75rem 0;
+
+  figcaption {
+    margin-top: 0.5rem;
+    font-size: 0.82rem;
+    color: var(--global-text-color-light);
+  }
+}
+
+.note-chart-scroll {
+  overflow-x: auto;
+}
+
+.note-chart-svg {
+  display: block;
+  width: 100%;
+  min-width: 560px;
+  height: auto;
+  font-size: 13px;
+
+  text {
+    fill: var(--global-text-color-light);
+  }
+
+  .nc-title {
+    font-size: 16px;
+    font-weight: 600;
+    fill: var(--global-text-color);
+  }
+
+  .nc-label {
+    fill: var(--global-text-color);
+  }
+
+  .nc-grid {
+    stroke: var(--global-divider-color);
+  }
+
+  .nc-axis {
+    stroke: var(--global-text-color-light);
+  }
+
+  .nc-ref {
+    stroke: var(--global-text-color-light);
+    stroke-dasharray: 4 4;
+  }
+
+  .nc-zone {
+    fill: var(--global-text-color-light);
+    fill-opacity: 0.12;
+  }
+
+  g > path,
+  g > line {
+    fill: none;
+    stroke-width: 2.5;
+  }
+
+  .nc-s-accent {
+    path,
+    line {
+      stroke: var(--global-theme-color);
+    }
+
+    circle {
+      fill: var(--global-theme-color);
+    }
+  }
+
+  .nc-s-muted {
+    path,
+    line {
+      stroke: var(--global-text-color-light);
+    }
+
+    circle {
+      fill: var(--global-text-color-light);
+    }
+  }
+
+  .nc-s-faint {
+    opacity: 0.45;
+  }
+
+  circle {
+    cursor: default;
+  }
+}
