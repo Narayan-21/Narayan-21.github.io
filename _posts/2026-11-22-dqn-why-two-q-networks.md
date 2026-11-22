@@ -149,7 +149,7 @@ $$
 whose minimizer (if the network could represent it exactly) is the Bellman optimality backup of the frozen network:
 
 $$
-Q_{\text{new}}(s,a) \approx \mathbb{E}\big[\, r + \gamma \max_{a'} Q_{\text{old}}(s', a') \,\big|\, s, a\big] = (\mathcal{T} Q_{\text{old}})(s,a)
+Q_{\text{new}}(s,a) \approx \mathbb{E}\big[\, r + \gamma \max_{a'} Q_{\text{old}}(s', a') \,\big\vert \, s, a\big] = (\mathcal{T} Q_{\text{old}})(s,a)
 $$
 
 Then the copy sets $$Q_{\text{old}} \leftarrow Q_{\text{new}}$$ and the next window starts. So each sync is roughly **one step of value iteration**, $$Q_{k+1} \approx \mathcal{T} Q_k$$, and DQN is approximately a sequence of supervised regression problems, each bootstrapped from the previous answer. This is the same idea as **fitted Q-iteration**. Value iteration converges because $$\mathcal{T}$$ is a γ-contraction; the frozen target is what makes DQN look like value iteration rather than like a learner chasing its own updates.
@@ -232,7 +232,7 @@ $$
 y = r + \gamma\, \hat{Q}\big(s', \arg\max_{a'} Q(s', a'; \theta);\; \theta^-\big)
 $$
 
-If the online network picks an action because its own noise made it look good, the target network's estimate of that same action has partly independent noise, so on average it is not inflated. In the three-action example with fully independent noise, the evaluation of the chosen action is +1 or −1 with equal probability, so its expected value is **0**, the true value. In practice the two networks' errors are only partly independent, so the bias is reduced rather than removed, but it is a one-line change that uses a network DQN already had for free.
+If the online network picks an action because its own noise made it look good, the target network's estimate of that same action has partly independent noise, so on average it is not inflated. In the three-action example with fully independent noise, the evaluation of the chosen action is +1 or −1 with equal probability, so its expected value is **0**, the true value. In practice the two networks' errors are only partly independent, so the bias is reduced rather than removed, but it is a one-line change that uses a network DQN already had for free. The theory behind the bias (including a proof that it appears even when the errors average to zero), the experimental results, and the tuned variant are covered in [section 10 of the DQN post]({% post_url 2026-11-22-dqn-deep-q-learning-atari %}#10-one-known-flaw-overestimation-and-double-dqn).
 
 ## 8. Summary
 

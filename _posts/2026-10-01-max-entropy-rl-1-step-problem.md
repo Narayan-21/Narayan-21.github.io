@@ -291,7 +291,7 @@ This mirrors the hard case, where the gradient of max r(a) is a one-hot vector o
 V always lies between the best reward and the best reward plus β log \|A\|:
 
 $$
-r_{\max} \;\le\; V \;\le\; r_{\max} + \beta\log|A|
+r_{\max} \;\le\; V \;\le\; r_{\max} + \beta\log\lvert A\rvert 
 $$
 
 **Lower bound.** Z contains the term exp(r\_max/β), and every other term is positive, so Z ≥ exp(r\_max/β). Taking β log of both sides gives V ≥ r\_max.
@@ -333,13 +333,13 @@ A shorter proof avoids the Lagrangian entirely. The whole result follows in one 
 Define π\*(a) = exp(r(a)/β) / Z, so log π\*(a) = r(a)/β − log Z. The KL divergence from π to π\* is:
 
 $$
-\mathrm{KL}(\pi \,\|\, \pi^*) = \sum_a \pi\log\pi - \sum_a \pi\log\pi^* = -\mathcal{H}(\pi) - \frac{1}{\beta}E_\pi[r] + \log Z
+\mathrm{KL}(\pi \,\Vert \, \pi^*) = \sum_a \pi\log\pi - \sum_a \pi\log\pi^* = -\mathcal{H}(\pi) - \frac{1}{\beta}E_\pi[r] + \log Z
 $$
 
 Multiply by β and rearrange:
 
 $$
-E_\pi[r] + \beta\,\mathcal{H}(\pi) = \beta\log Z - \beta\,\mathrm{KL}(\pi \,\|\, \pi^*)
+E_\pi[r] + \beta\,\mathcal{H}(\pi) = \beta\log Z - \beta\,\mathrm{KL}(\pi \,\Vert \, \pi^*)
 $$
 
 The left side is exactly our objective. On the right, β log Z is a constant and KL ≥ 0, with equality only when π = π\*. So:
@@ -381,7 +381,7 @@ The expectation is over the trajectories the policy and the environment's dynami
 V\_k(s) is the best reward-plus-entropy you can collect starting in state s with k steps to go:
 
 $$
-V_k(s) = \max_{\pi} \; E\Big[\sum_{t=H-k}^{H} r(s_t, a_t) + \beta\,\mathcal{H}\big(\pi(\cdot \mid s_t)\big) \;\Big|\; s_{H-k} = s\Big]
+V_k(s) = \max_{\pi} \; E\Big[\sum_{t=H-k}^{H} r(s_t, a_t) + \beta\,\mathcal{H}\big(\pi(\cdot \mid s_t)\big) \;\Big\vert \; s_{H-k} = s\Big]
 $$
 
 The sum starts at H − k because only the last steps remain. With nothing left to do, V₀(s) = 0 for every s.
