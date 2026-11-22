@@ -2,42 +2,42 @@
 layout: post
 title: "Maximum-Entropy RL: The 1-Step Problem"
 date: 2026-10-01 10:00:00 +0530
-description: Working through why an entropy bonus turns argmax into softmax and max into log-sum-exp, step by step, then following it into soft value iteration, SAC and robust RL.
+description: Why an entropy bonus turns argmax into softmax and max into log-sum-exp, derived step by step, then extended to soft value iteration, SAC and robust RL.
 tags: [RL]
 toc:
   sidebar: left
 related_posts: true
 ---
 
-## Why I wrote this
+## Overview
 
-I'm working through Pieter Abbeel's *Foundations of Deep RL* series, and Lecture 5 (DDPG and SAC) has a few slides on maximum-entropy RL that look short but hide a lot of algebra. This post is me filling in every step, mostly so that I actually understand it, and partly so the next person stuck on those slides has the full derivation in one place.
+Maximum-entropy RL adds an entropy bonus to the usual reward-maximization objective. Its core results are short to state but hide a lot of algebra. This post fills in every step, so the full derivation is in one place.
 
-The one result I want to take away: adding an entropy bonus to a one-shot decision turns the greedy argmax policy into a softmax policy, and turns the value max r(a) into a smooth log-sum-exp.
+The key result: adding an entropy bonus to a one-shot decision turns the greedy argmax policy into a softmax policy, and turns the value max r(a) into a smooth log-sum-exp.
 
 $$
 \pi^*(a) = \frac{1}{Z}\exp\!\Big(\frac{r(a)}{\beta}\Big), \qquad V^* = \beta \log \sum_a \exp\!\Big(\frac{r(a)}{\beta}\Big)
 $$
 
-I cover the two "Max-ent for 1-step problem" slides and the "Max-ent Value Iteration" slide, and then go into the paper by Eysenbach and Levine (2021) that explains why entropy makes policies robust. For me this was the stepping stone to soft Q-learning and Soft Actor-Critic.
+The post derives the optimal policy and optimal value of the max-ent 1-step problem, extends the result to multi-step max-ent value iteration, and then turns to the paper by Eysenbach and Levine (2021) that explains why entropy makes policies robust. The 1-step problem is the stepping stone to soft Q-learning and Soft Actor-Critic.
 
-**What I assume you know:** expectations over a discrete distribution, logs and exponentials, partial derivatives, and the basic idea of a Lagrange multiplier. No prior RL theory beyond "a policy is a distribution over actions" is needed.
+**Prerequisites:** expectations over a discrete distribution, logs and exponentials, partial derivatives, and the basic idea of a Lagrange multiplier. No prior RL theory beyond "a policy is a distribution over actions" is needed.
 
 **How the post is laid out:**
 
-1. Sections 1 to 6 derive the optimal policy (slide 1).
+1. Sections 1 to 6 set up the max-ent 1-step problem and derive its optimal policy.
 2. Section 7 interprets the temperature β.
-3. Sections 8 to 11 derive and interpret the optimal value V (slide 2).
+3. Sections 8 to 11 derive and interpret the optimal value V.
 4. Sections 12 and 13 give a second, shorter proof and a useful rewrite.
-5. Section 14 derives max-ent value iteration (slide 3); section 15 extends it to discounting, soft Q-learning and SAC.
+5. Section 14 derives max-ent value iteration for the finite-horizon multi-step problem; section 15 extends it to discounting, soft Q-learning and SAC.
 6. Sections 16 to 18 cover why entropy pays off: Eysenbach and Levine's proof that max-ent RL solves a robust RL problem, worked examples, and their experiments.
 7. Section 19 puts everything on one page.
 
-What helped me most was doing each derivation on paper before reading the next step, so if you're learning this too, I'd recommend the same.
+Each derivation is worth reproducing on paper before reading the next step.
 
 ## 1. The 1-step problem and why we add entropy
 
-I like this setting because it strips RL down to one decision: no states, no future, one action a chosen from a discrete set, then a known reward r(a). It is a bandit with known rewards.
+This setting strips RL down to one decision: no states, no future, one action a chosen from a discrete set, then a known reward r(a). It is a bandit with known rewards.
 
 The policy π(a) is a probability distribution over actions, and the numbers π(a₁), π(a₂), … are what we optimize.
 
@@ -49,13 +49,13 @@ $$
 
 The answer is trivial: put probability 1 on the best action. The optimal policy is deterministic and greedy.
 
-**Max-ent objective (top line of slide 1).** Add a bonus for the policy's entropy, weighted by a temperature β > 0:
+**Max-ent objective.** Add a bonus for the policy's entropy, weighted by a temperature β > 0:
 
 $$
 \max_{\pi(a)} \; E[r(a)] + \beta\,\mathcal{H}(\pi(a))
 $$
 
-Entropy measures how spread out the policy is. Rewarding it buys three things I care about in practice:
+Entropy measures how spread out the policy is. Rewarding it buys three things that matter in practice:
 
 - **Exploration:** the policy keeps trying actions that currently look slightly worse.
 - **Robustness:** it does not bet everything on one action whose reward estimate might be wrong.
@@ -73,13 +73,13 @@ $$
 
 The minus sign in the entropy is there because log π(a) ≤ 0, so each term −π log π is ≥ 0. Entropy is 0 for a deterministic policy and reaches its maximum, log \|A\|, for the uniform policy over \|A\| actions.
 
-Substituting gives line 2 of slide 1:
+Substituting gives the max-ent objective written out explicitly:
 
 $$
 \max_{\pi(a)} \; \sum_a \pi(a)\,r(a) \;-\; \beta \sum_a \pi(a)\log\pi(a)
 $$
 
-The sign flip tripped me up the first time: "+β × entropy" becomes "−β × Σ π log π".
+Note the sign flip: "+β × entropy" becomes "−β × Σ π log π".
 
 ## 3. The constraint and the Lagrangian
 
@@ -89,13 +89,13 @@ $$
 \sum_a \pi(a) = 1, \qquad \pi(a) \ge 0
 $$
 
-The equality constraint is handled with a Lagrange multiplier λ. This is line 3 of slide 1:
+The equality constraint is handled with a Lagrange multiplier λ, which turns the problem into a saddle-point problem over the Lagrangian:
 
 $$
 \max_{\pi(a)} \min_{\lambda} \; \mathcal{L}(\pi, \lambda) = \sum_a \pi(a)r(a) - \beta\sum_a \pi(a)\log\pi(a) + \lambda\Big(\sum_a \pi(a) - 1\Big)
 $$
 
-**Why max over π, then min over λ?** This confused me at first. The trick is to look at the inner minimization for a fixed π:
+**Why max over π, then min over λ?** The trick is to look at the inner minimization for a fixed π:
 
 - If π breaks the constraint, say Σ π > 1, the minimizer sends λ → −∞ and the Lagrangian goes to −∞. If Σ π &lt; 1, it sends λ → +∞ with the same effect. The maximizer will never pick such a π.
 - If π satisfies the constraint, the bracket is 0, λ has no effect, and the Lagrangian equals the original objective.
@@ -128,7 +128,7 @@ $$
 \frac{\partial}{\partial \pi(a)}\Big[-\beta\sum_{a'}\pi(a')\log\pi(a')\Big] = -\beta\log\pi(a) - \beta
 $$
 
-The "+1" from the product rule is where the stray −β on the slide comes from. I stared at that −β for a while before I saw it.
+The "+1" from the product rule is the source of the constant −β term in the stationarity condition below.
 
 **Constraint term:**
 
@@ -136,7 +136,7 @@ $$
 \frac{\partial}{\partial \pi(a)}\,\lambda\Big(\sum_{a'}\pi(a') - 1\Big) = \lambda
 $$
 
-**Setting the sum to zero** gives the stationarity condition on the slide:
+**Setting the sum to zero** gives the stationarity condition:
 
 $$
 r(a) - \beta\log\pi(a) - \beta + \lambda = 0
@@ -156,21 +156,27 @@ $$
 \pi(a) = \underbrace{\exp\!\Big(\frac{r(a)}{\beta}\Big)}_{\text{depends on } a} \cdot \underbrace{\exp\!\Big(\frac{\lambda - \beta}{\beta}\Big)}_{\text{same constant } C \text{ for every } a}
 $$
 
-This was the key observation for me. λ − β is the same for every action, so it only rescales. The shape of the policy is fixed entirely by exp(r(a)/β).
+This is the key observation: λ − β is the same for every action, so it only rescales. The shape of the policy is fixed entirely by exp(r(a)/β).
 
-**Using the λ condition.** Setting ∂L/∂λ = 0 (right column of slide 1) just returns the constraint Σ π(a) = 1. Plug in π(a) = C exp(r(a)/β):
+**Using the λ condition.** The second stationarity condition comes from differentiating the Lagrangian with respect to λ:
+
+$$
+\frac{\partial \mathcal{L}}{\partial \lambda} = \sum_a \pi(a) - 1 = 0
+$$
+
+This just returns the constraint Σ π(a) = 1. Plug in π(a) = C exp(r(a)/β):
 
 $$
 C\sum_a \exp\!\Big(\frac{r(a)}{\beta}\Big) = 1 \quad\Longrightarrow\quad C = \frac{1}{Z}, \qquad Z = \sum_a \exp\!\Big(\frac{r(a)}{\beta}\Big)
 $$
 
-**Result (bottom of slide 1):**
+**Result: the optimal policy.**
 
 $$
 \pi^*(a) = \frac{1}{Z}\exp\!\Big(\frac{r(a)}{\beta}\Big)
 $$
 
-Z is called the **partition function**, a name borrowed from statistical physics. If you want λ itself, C = exp((λ − β)/β) = 1/Z gives λ = β − β log Z. I never needed it again.
+Z is called the **partition function**, a name borrowed from statistical physics. If you want λ itself, C = exp((λ − β)/β) = 1/Z gives λ = β − β log Z. It is not needed for anything that follows.
 
 ## 6. Checking it is the global maximum
 
@@ -211,7 +217,13 @@ With β = 1, an action that is 1 reward unit better is e ≈ 2.72 times more lik
 
 ## 8. The optimal value V = β log Z
 
-Plugging the optimal policy back into the objective gives V = β log Z (slide 2). V is the best achievable reward-plus-entropy; in ordinary RL the same quantity is just max r(a).
+The optimal value is the objective evaluated at the optimal policy:
+
+$$
+V = \max_{\pi(a)} \; \sum_a \pi(a)\,r(a) \;-\; \beta \sum_a \pi(a)\log\pi(a) \quad \text{subject to} \quad \sum_a \pi(a) = 1
+$$
+
+Plugging π\* back into the objective gives V = β log Z. V is the best achievable reward-plus-entropy; in ordinary RL the same quantity is just max r(a).
 
 **Step 1: substitute π everywhere.** Every π(a) becomes (1/Z) exp(r(a)/β):
 
@@ -225,7 +237,7 @@ $$
 \log\!\Big(\tfrac{1}{Z}e^{r(a)/\beta}\Big) = \log\!\big(e^{r(a)/\beta}\big) + \log\tfrac{1}{Z}
 $$
 
-The first piece carries the same weight as the reward term, so the slide merges them into one sum. The second piece becomes its own sum:
+The first piece carries the same weight as the reward term, so the two can be merged into one sum. The second piece becomes its own sum:
 
 $$
 V = \sum_a \tfrac{1}{Z}e^{r(a)/\beta}\Big(r(a) - \beta\log e^{r(a)/\beta}\Big) \;-\; \beta\sum_a \tfrac{1}{Z}e^{r(a)/\beta}\log\tfrac{1}{Z}
@@ -243,7 +255,7 @@ $$
 V = 0 - \beta\log\tfrac{1}{Z}\;\sum_a \tfrac{1}{Z}e^{r(a)/\beta}
 $$
 
-I misread the slide's line 3 at first. Read it as (β log 1/Z) × (Σ …), not as the log of the whole sum.
+Read this line as (β log 1/Z) × (Σ …), not as the log of the whole sum.
 
 **Step 4: the remaining sum is 1.** It is Σ π(a), which equals 1 by the definition of Z:
 
@@ -259,11 +271,11 @@ $$
 
 ## 9. Soft max vs softmax, and the gradient
 
-This one caught me out: the word "softmax" names two different objects, and the slide uses it for the value, not the policy.
+The word "softmax" names two different objects, and in the max-ent RL literature it is often used for the value, not the policy.
 
 | Object | Formula | What it smooths | Common names |
 | --- | --- | --- | --- |
-| Optimal value V | β log Σ exp(r(a)/β) | max r(a), a number | soft max, log-sum-exp (Abbeel's "softmax") |
+| Optimal value V | β log Σ exp(r(a)/β) | max r(a), a number | soft max, log-sum-exp (also called "softmax" in some RL texts) |
 | Optimal policy π | exp(r(a)/β) / Z | one-hot argmax, a distribution | softmax in ML libraries, soft-argmax, Boltzmann policy |
 
 **The link: the gradient of log-sum-exp is the softmax distribution.** Differentiate V with respect to one reward:
@@ -294,7 +306,7 @@ What this means:
 
 ## 11. Worked example
 
-To make it concrete, I plugged in numbers. With rewards r = [1, 2, 3] and β = 1, the optimal policy is about [0.090, 0.245, 0.665] and V = log Z ≈ 3.408.
+A concrete example: with rewards r = [1, 2, 3] and β = 1, the optimal policy is about [0.090, 0.245, 0.665] and V = log Z ≈ 3.408.
 
 **Policy.** The exponentials are e¹ ≈ 2.718, e² ≈ 7.389 and e³ ≈ 20.086, so Z ≈ 30.19. Dividing each by Z gives π ≈ [0.090, 0.245, 0.665].
 
@@ -308,7 +320,7 @@ To make it concrete, I plugged in numbers. With rewards r = [1, 2, 3] and β = 1
 | Entropy | −(0.090 ln 0.090 + 0.245 ln 0.245 + 0.665 ln 0.665) | 0.833 |
 | Objective, β = 1 | 2.575 + 1 × 0.833 | 3.408 |
 
-Both routes give 3.408, which was a nice sanity check.
+Both routes give 3.408, a useful sanity check.
 
 **Bounds check.** 3 ≤ 3.408 ≤ 3 + ln 3 ≈ 4.099.
 
@@ -316,7 +328,7 @@ Both routes give 3.408, which was a nice sanity check.
 
 ## 12. A second proof via KL divergence
 
-After grinding through the Lagrangian, this shorter proof is the one that made it click for me. The whole result follows in one line, with no Lagrange multipliers, once you compare any policy π to the Boltzmann policy π\*.
+A shorter proof avoids the Lagrangian entirely. The whole result follows in one line, with no Lagrange multipliers, once you compare any policy π to the Boltzmann policy π\*.
 
 Define π\*(a) = exp(r(a)/β) / Z, so log π\*(a) = r(a)/β − log Z. The KL divergence from π to π\* is:
 
@@ -350,9 +362,9 @@ $$
 
 r(a) − V works like an advantage. Because V ≥ r\_max, every action has r(a) − V ≤ 0, which matches log π ≤ 0. This form is the one used directly in soft Q-learning.
 
-## 14. Max-ent value iteration (slide 3)
+## 14. Max-ent value iteration
 
-The multi-step max-ent problem is solved by running the 1-step solution at every state, with Q in place of r, working backwards from the horizon. Abbeel's slide puts it as: the 1-step problem with Q instead of r, so the solution transcribes directly.
+The multi-step max-ent problem is solved by running the 1-step solution at every state, with Q in place of r, working backwards from the horizon. In short: each backup is the 1-step problem with Q instead of r, so the solution transcribes directly.
 
 ### The multi-step objective
 
@@ -386,7 +398,7 @@ $$
 V_k(s) = \max_{\pi(\cdot \mid s)} \; E_{a \sim \pi,\; s' \sim P(\cdot \mid s, a)}\Big[r(s,a) + \beta\,\mathcal{H}\big(\pi(\cdot \mid s)\big) + V_{k-1}(s')\Big]
 $$
 
-One thing I noticed: the slide's version closes the entropy bracket in the wrong place, after V\_{k−1}(s′). The entropy is only of π(·\|s); V\_{k−1}(s′) is added to it, as above.
+Note the bracketing: the entropy is only of π(·\|s); V\_{k−1}(s′) is added to it, not placed inside the entropy.
 
 {: start="4"}
 4. The entropy term depends on the whole distribution π(·\|s), not on the sampled a or s′, so it moves outside the expectation. The other two terms are grouped and averaged over the next state:
@@ -476,9 +488,9 @@ The hard max becomes the log-sum-exp derived in section 8; nothing else changes.
 
 ## 16. Why entropy pays off: max-ent RL is robust RL
 
-Section 1 listed robustness as a motivation, and I wanted to know whether that was more than a hand-wave. It is: Eysenbach and Levine (2021) prove that the Boltzmann policy derived above is also a robust policy. Its max-ent score on one reward is a guaranteed plain return on a whole set of perturbed rewards, and it lower-bounds the return under a set of perturbed dynamics.
+Section 1 listed robustness as a motivation, and it is more than a hand-wave: Eysenbach and Levine (2021) prove that the Boltzmann policy derived above is also a robust policy. Its max-ent score on one reward is a guaranteed plain return on a whole set of perturbed rewards, and it lower-bounds the return under a set of perturbed dynamics.
 
-The paper uses α for the temperature and sets α = 1 in its proofs. My β is the same thing.
+The paper uses α for the temperature and sets α = 1 in its proofs. It is the same quantity as β in this post.
 
 ### Robust RL in one line
 
@@ -488,7 +500,7 @@ $$
 \max_{\pi} \; \min_{\tilde p \in \tilde{\mathcal P},\; \tilde r \in \tilde{\mathcal R}} \; E_{\pi, \tilde p}\Big[\sum_t \tilde r(s_t, a_t)\Big]
 $$
 
-No entropy appears here: the robust objective is plain return. What surprised me is that solving the max-ent problem solves this game for specific sets R̃ and P̃.
+No entropy appears here: the robust objective is plain return. The striking result is that solving the max-ent problem solves this game for specific sets R̃ and P̃.
 
 ### The reward-robust set
 
@@ -548,7 +560,7 @@ The paper uses rewards r(a₁) = 2 and r(a₂) = 1. Take β = 1 and ε = 0. Each
 | Uniform [0.5, 0.5] | 1.500 | 0.693 | 2.193 | [2.693, 1.693] |
 | Near-greedy [0.99, 0.01] | 1.990 | 0.056 | 2.046 | [2.010, 5.605] |
 
-Three things stood out to me in this table:
+Three things stand out in this table:
 
 - **The Boltzmann policy wins the robust game.** Its guarantee, 2.313, equals log(e² + e), its soft value V from section 8.
 - **The greedy policy is fragile.** Its worst case is a reward where the arm it ignores is worth 5.6. Betting 99% on arm 1 leaves it exposed to exactly that.
@@ -600,7 +612,7 @@ The paper notes that if the adversary shifts the mean but keeps the variance at 
 
 ### Temperature: one subtlety
 
-The paper's appendix finds that, for reward perturbations, a higher temperature gives a smaller robust set: the policy is robust to fewer rewards, but ones closer to the training reward. For dynamics, Lemma 4.3 says the set grows with entropy, and the experiments find large temperatures help. The paper does not reconcile these two statements in one picture, so I read "higher β means more robust" as a dynamics-robustness claim.
+The paper's appendix finds that, for reward perturbations, a higher temperature gives a smaller robust set: the policy is robust to fewer rewards, but ones closer to the training reward. For dynamics, Lemma 4.3 says the set grows with entropy, and the experiments find large temperatures help. The paper does not reconcile these two statements in one picture, so "higher β means more robust" is best read as a dynamics-robustness claim.
 
 ## 18. What the paper's experiments show
 
@@ -618,7 +630,7 @@ Across robot manipulation, navigation and Gym control tasks, SAC (max-ent RL) he
 
 The exact success rates and returns are plotted in the figures; the text quoted above gives the qualitative outcome and the thresholds it states.
 
-**For me, the L-shaped navigation result is the key conceptual one.** Max-ent RL is not standard RL plus noise. Entropy enters the objective (section 1), so the policy learns where randomness is cheap and where it is costly, and becomes random only where it can afford to be. Uniform added noise cannot make that distinction.
+**The L-shaped navigation result is the key conceptual one.** Max-ent RL is not standard RL plus noise. Entropy enters the objective (section 1), so the policy learns where randomness is cheap and where it is costly, and becomes random only where it can afford to be. Uniform added noise cannot make that distinction.
 
 ### Limitations the authors state
 
@@ -658,11 +670,8 @@ Here is everything from this post on one page.
 
 ## Wrapping up
 
-What stuck with me most is how little actually changes. Adding an entropy term turns every hard max into a log-sum-exp and every argmax into a softmax, and the rest of RL carries over. The same small change is what makes SAC work, and, as Eysenbach and Levine show, it also buys a precise kind of robustness for free.
-
-If you spot a mistake in any of the derivations, I'd love to hear about it.
+The central lesson is how little actually changes. Adding an entropy term turns every hard max into a log-sum-exp and every argmax into a softmax, and the rest of RL carries over. The same small change is what makes SAC work, and, as Eysenbach and Levine show, it also buys a precise kind of robustness for free.
 
 ## Sources
 
 - Eysenbach, B. and Levine, S. (2021). [Maximum Entropy RL (Provably) Solves Some Robust RL Problems](https://arxiv.org/abs/2103.06257). arXiv:2103.06257. Sections 16 to 18.
-- Pieter Abbeel, *Foundations of Deep RL*, Lecture 5 slides "Max-ent for 1-step problem" and "Max-ent Value Iteration". Sections 1 to 14.
