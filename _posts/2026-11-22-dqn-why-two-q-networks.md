@@ -14,7 +14,7 @@ related_posts: true
 The Deep Q-Network (DQN) algorithm keeps **two copies** of its Q-network:
 
 - the **online network** $$Q(\cdot\,; \theta)$$, which is trained at every step and used to choose actions, and
-- the **target network** $$\hat{Q}(\cdot\,; \theta^-)$$, which is never trained by gradient descent. It only computes the regression targets, and every C steps (C = 10,000 in the Nature paper) it is overwritten with a copy of the online weights.
+- the **target network** $$\hat{Q}(\cdot\,; \theta^-)$$, which is never trained by gradient descent. It only computes the regression targets, and every C steps it is overwritten with a copy of the online weights. In the Nature paper C = 10,000, counted in gradient updates; "steps" in this post means gradient updates.
 
 That looks odd at first. Q-learning has a single update rule and a single Q-function, so why two networks? This post answers that question in depth, with a small numerical example that shows exactly what goes wrong with one network and what the frozen copy fixes. The full DQN algorithm, including experience replay and the Atari details, is covered in [Deep Q-Networks: How Deep Q-Learning Learned to Play Atari]({% post_url 2026-11-22-dqn-deep-q-learning-atari %}).
 
@@ -251,7 +251,7 @@ If the online network picks an action because its own noise made it look good, t
 
 ## Sources
 
-- Mnih, V. et al. (2015). [Human-level control through deep reinforcement learning](https://www.nature.com/articles/nature14236). *Nature* 518, 529–533. The target network, C = 10,000 and the other hyperparameters.
+- Mnih, V. et al. (2015). [Human-level control through deep reinforcement learning](https://www.nature.com/articles/nature14236). *Nature* 518, 529–533. The target network, C = 10,000 (Extended Data Table 1) and the ablation of replay and the target network (Extended Data Table 3).
 - van Hasselt, H., Guez, A. and Silver, D. (2016). [Deep Reinforcement Learning with Double Q-learning](https://arxiv.org/abs/1509.06461). AAAI. Double DQN and the overestimation analysis.
 - Lillicrap, T. et al. (2016). [Continuous control with deep reinforcement learning](https://arxiv.org/abs/1509.02971). ICLR. Soft target updates in DDPG.
 - Riedmiller, M. (2005). [Neural Fitted Q Iteration](https://link.springer.com/chapter/10.1007/11564096_32). ECML. Fitted Q-iteration with neural networks.
